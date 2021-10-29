@@ -24,9 +24,20 @@
   </Suspense>
   <hr />
   <profile-with-props name="Luis" age="33" />
+  <hr />
+  <emit-events @onFire="emitEventFromChild" />
+  <hr />
+  <root-events></root-events>
+  <hr />
+  <login-form
+    v-model:email="email"
+    v-model:password="password"
+  />
+  {{ email }} - {{ password }}
 </template>
 
 <script>
+import {reactive, toRefs} from "vue";
 import HelloWorld from "@/components/00HelloWorld"
 import SimpleCounter from "@/components/01SimpleCounter";
 import ReactiveCounter from "@/components/02ReactiveCounter";
@@ -36,9 +47,15 @@ import TodoList from "@/components/05TodoList";
 import SimpleFetch from "@/components/06SimpleFetch";
 import SuspenseFetch from "@/components/07SuspenseFetch";
 import ProfileWithProps from "@/components/08ProfileWithProps";
+import EmitEvents from "@/components/09EmitEvents";
+import RootEvents from "@/components/10RootEvents";
+import LoginForm from "@/components/11LoginForm";
 export default {
   name: 'Home',
   components: {
+    LoginForm,
+    RootEvents,
+    EmitEvents,
     ProfileWithProps,
     SuspenseFetch,
     SimpleFetch,
@@ -48,6 +65,17 @@ export default {
     ReactiveCounter,
     SimpleCounter,
     HelloWorld
+  },
+  setup(){
+    const emitEventFromChild = (message) => {
+      console.log(message)
+    }
+    const login = reactive({
+      email: "",
+      password: "",
+    })
+
+    return {...toRefs(login), emitEventFromChild }
   }
 }
 </script>
